@@ -1,0 +1,4 @@
+@EndUserText.label: 'Phiếu xuất kho - Goods Issue'
+define service ZSD_GOODS_ISSUE_FORM {
+  expose ZC_Goods_Issue_Form;
+}

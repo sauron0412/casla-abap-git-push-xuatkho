@@ -1,0 +1,217 @@
+@Metadata.layer: #CORE
+
+@UI: {
+  headerInfo: {
+    typeName: 'Goods Receipt',
+    typeNamePlural: 'Goods Receipts',
+    title: {
+      type: #STANDARD,
+      value: 'MaterialDocument'
+    },
+    description: {
+      type: #STANDARD,
+      value: 'DocumentHeaderText'
+    }
+  },
+  presentationVariant: [{
+    sortOrder: [{
+      by: 'MaterialDocument',
+      direction: #DESC
+    }, {
+      by: 'FiscalYear',
+      direction: #DESC
+    }],
+    visualizations: [{
+      type: #AS_LINEITEM
+    }]
+  }]
+}
+
+annotate entity ZC_Goods_Issue_Form with
+{
+  @UI.facet: [
+    {
+      id: 'HeaderData',
+      type: #COLLECTION,
+      label: 'General Information',
+      position: 10
+    },
+    {
+      id: 'HeaderGeneral',
+      type: #FIELDGROUP_REFERENCE,
+      parentId: 'HeaderData',
+      targetQualifier: 'GeneralData',
+      label: 'Document Header',
+      position: 10
+    },
+    {
+      id: 'HeaderVendor',
+      type: #FIELDGROUP_REFERENCE,
+      parentId: 'HeaderData',
+      targetQualifier: 'VendorData',
+      label: 'Vendor & Plant Information',
+      position: 20
+    },
+    {
+      id: 'Signatures',
+      type: #FIELDGROUP_REFERENCE,
+      parentId: 'HeaderData',
+      targetQualifier: 'SignatureData',
+      label: 'Approval Signatures',
+      position: 30
+    },
+    {
+      id: 'LineItems',
+      type: #COLLECTION,
+      label: 'Line Items Detail',
+      position: 20
+    },
+    {
+      id: 'LineItemsGroup',
+      type: #FIELDGROUP_REFERENCE,
+      parentId: 'LineItems',
+      targetQualifier: 'LineItems',
+      position: 10
+    }
+  ]
+
+  @UI: {
+     lineItem: [{ position: 3, importance: #HIGH }],
+     identification: [{ position: 3 }],
+     fieldGroup: [{ qualifier: 'GeneralData', position: 3 }],
+     selectionField: [{ position: 3 }]
+   }
+  @EndUserText.label: 'Số phiếu xuất kho'
+  @Consumption.filter: {
+    selectionType: #RANGE,
+    mandatory: true
+  }
+  @Consumption.valueHelpDefinition: [{
+    entity: { name: 'I_MaterialDocumentHeader_2', element: 'MaterialDocument' },
+    useForValidation: true
+  }]
+  MaterialDocument;
+
+  @UI: {
+    lineItem: [{ position: 6, importance: #HIGH }],
+    identification: [{ position: 6 }],
+    fieldGroup: [{ qualifier: 'GeneralData', position: 6 }],
+    selectionField: [{ position: 6 }]
+  }
+  @EndUserText.label: 'Năm'
+  @Consumption.filter: {
+    selectionType: #SINGLE,
+    mandatory: true
+  }
+  FiscalYear;
+
+  @UI: {
+    lineItem: [{ position: 10, importance: #HIGH }],
+    identification: [{ position: 10 }],
+    fieldGroup: [{ qualifier: 'GeneralData', position: 10 }]
+  }
+  @EndUserText.label: 'Company Code'
+  CompanyCode;
+
+  @UI: {
+    lineItem: [{ position: 20, importance: #HIGH }],
+    identification: [{ position: 20 }],
+    fieldGroup: [{ qualifier: 'GeneralData', position: 20 }]
+  }
+  @EndUserText.label: 'Purchase Order'
+  SalesOrderNumber;
+
+  @UI: {
+    lineItem: [{ position: 30, importance: #MEDIUM }],
+    identification: [{ position: 30 }],
+    fieldGroup: [{ qualifier: 'GeneralData', position: 30 }]
+  }
+  @EndUserText.label: 'Reservation Number'
+  NumberOfReservation;
+
+  @UI: {
+    lineItem: [{ position: 40, importance: #HIGH }],
+    identification: [{ position: 40 }],
+    fieldGroup: [{ qualifier: 'GeneralData', position: 40 }]
+  }
+  @EndUserText.label: 'Document Date'
+  MaterialDocumentDate;
+
+  @UI: {
+    lineItem: [{ position: 50, importance: #HIGH }],
+    identification: [{ position: 50 }],
+    fieldGroup: [{ qualifier: 'VendorData', position: 10 }]
+  }
+  @EndUserText.label: 'Vendor Name'
+  CustomerName;
+
+  @UI: {
+    lineItem: [{ position: 60, importance: #MEDIUM }],
+    identification: [{ position: 60 }],
+    fieldGroup: [{ qualifier: 'VendorData', position: 20 }]
+  }
+  @EndUserText.label: 'Plant Name'
+  PlantName;
+
+  @UI: {
+    lineItem: [{ position: 70, importance: #MEDIUM }],
+    identification: [{ position: 70 }],
+    fieldGroup: [{ qualifier: 'GeneralData', position: 50 }]
+  }
+  @EndUserText.label: 'Header Text'
+  @UI.multiLineText: true
+  DocumentHeaderText;
+
+  @UI: {
+    lineItem: [{ position: 80, importance: #HIGH }],
+    identification: [{ position: 80 }],
+    fieldGroup: [{ qualifier: 'GeneralData', position: 60 }]
+  }
+  @EndUserText.label: 'Posting Date'
+  PostingDate;
+
+  @UI: {
+    identification: [{ position: 90 }],
+    fieldGroup: [{ qualifier: 'SignatureData', position: 10 }],
+    selectionField: [{ position: 10 }]
+  }
+  @EndUserText.label: 'Trưởng/phó đơn vị'
+  HeadOfDepartment;
+
+  @UI: {
+    identification: [{ position: 95 }],
+    fieldGroup: [{ qualifier: 'SignatureData', position: 15 }],
+    selectionField: [{ position: 15 }]
+  }
+  @EndUserText.label: 'Địa chỉ (bộ phận)'
+  @Consumption.filter.selectionType: #SINGLE
+  Department;
+
+  @UI: {
+    identification: [{ position: 100 }],
+    fieldGroup: [{ qualifier: 'SignatureData', position: 20 }],
+    selectionField: [{ position: 20 }]
+  }
+  @EndUserText.label: 'Thủ kho'
+  @Consumption.filter.selectionType: #SINGLE
+  Cashier;
+
+  @UI: {
+
+    identification: [{ position: 110 }],
+    fieldGroup: [{ qualifier: 'SignatureData', position: 30 }],
+    selectionField: [{ position: 30 }]
+  }
+  @EndUserText.label: 'Kế toán'
+  @Consumption.filter.selectionType: #SINGLE
+  Director;
+
+
+  @UI: {
+    fieldGroup: [{ qualifier: 'LineItems', position: 10, label: 'Detailed Line Items (JSON)' }],
+    multiLineText: true,
+    lineItem: [{ position: 1010, importance: #LOW, label: 'Line Item' }]
+  }
+  @EndUserText.label: 'Line Items Detail'
+  LineItemsJson;
+}
